@@ -22,6 +22,10 @@ db.once("open", () => {
     console.log("connected");
 })
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+  }) 
+
 app.get("/get_posts", async(req, res) => {
     const data = await Post.find()
     res.json(data)
