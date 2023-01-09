@@ -12,7 +12,6 @@ app.use(bodyParser.json());
 
 env.config();
 
-app.use(cors());
 
 mongoose.set('strictQuery', true)
 mongoose.connect(`mongodb+srv://sandeeptottadi:${process.env.Database_password}@cluster0.mqb2isn.mongodb.net/?retryWrites=true&w=majority`, {useNewUrlParser: true})
@@ -22,21 +21,27 @@ db.once("open", () => {
     console.log("connected");
 })
 
+app.use(cors());
 
 app.get("/get_posts", async(req, res) => {
     const data = await Post.find()
-    console.log(data)
     res.json(data)
 })
 
-app.post("/create_new_post", (req, res) => {
-    const newPost = new Post({
-        title: req.body.title,
-        description: req.body.description,
-        image_url: req.body.image_url,
-        type: req.body.type
+app.post("/create_new_post", async (req, res) => {
+    const newPost = await new Post({
+    title: req.body.title,
+    description: req.body.description,
+    image_url: req.body.image_url,
+    type: req.body.type
+    })
+    newPost.save(function (err, data) {
+        if (err) {
+          return res.status(400).send(err);
+        }
+        return res.json(data);
       });
-      console.log(newPost)
 })
+
 
 app.listen(5000)
