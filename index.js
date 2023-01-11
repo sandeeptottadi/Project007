@@ -21,7 +21,13 @@ db.once("open", () => {
     console.log("connected");
 })
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://project007-c8cae.web.app/"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  exposedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.get("/get_posts", async(req, res) => {
     const data = await Post.find()
