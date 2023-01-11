@@ -25,15 +25,16 @@ app.use(cors({
   origin: "*",
 }));
 
-app.get("/get_posts", async(req, res) => {
-    const data = await Post.find()
-    res.json(data)
+app.post("/get_posts", async(req, res) => {
+    POSTS_PER_PAGE = 4;
+    const newPosts = await Post.find().sort({ date: -1 }).skip(req.body.page * POSTS_PER_PAGE).limit(POSTS_PER_PAGE)
+    res.json(newPosts)
 })
 
 app.post("/create_new_post", async (req, res) => {
     const newPost = await new Post({
     title: req.body.title,
-    description: req.body.description,
+    description : {text:req.body.description.text, img_url:req.body.description.img_url},
     image_url: req.body.image_url,
     type: req.body.type
     })
