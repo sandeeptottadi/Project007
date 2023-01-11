@@ -22,11 +22,7 @@ db.once("open", () => {
 })
 
 app.use(cors({
-  origin: ["http://localhost:3000", "https://project007-c8cae.web.app/"],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  exposedHeaders: ["Content-Type", "Authorization"]
+  origin: "*",
 }));
 
 app.get("/get_posts", async(req, res) => {
